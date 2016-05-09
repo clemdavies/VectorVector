@@ -1,0 +1,33 @@
+# depslib dependency file v1.0
+1462771629 source:c:\users\clemdavies\dropbox\uni\2016-s1\ict283\projects\vectorvector\main.cpp
+	<iostream>
+	"Vector.h"
+	"TestingTools.h"
+	"TestVector.h"
+
+1462771623 c:\users\clemdavies\dropbox\uni\2016-s1\ict283\projects\vectorvector\include\vector.h
+	<math.h>
+	<vector>
+
+1462771643 c:\users\clemdavies\dropbox\uni\2016-s1\ict283\projects\vectorvector\tests\include\testingtools.h
+	<vector>
+	<iostream>
+	<typeinfo>
+	<string.h>
+	<string>
+	<exception>
+	<sstream>
+
+1462771590 c:\users\clemdavies\dropbox\uni\2016-s1\ict283\projects\vectorvector\tests\include\testvector.h
+	"TestingTools.h"
+	"Vector.h"
+
+1462771651 source:c:\users\clemdavies\dropbox\uni\2016-s1\ict283\projects\vectorvector\src\vector.cpp
+	"Vector.h"
+
+1462771657 source:c:\users\clemdavies\dropbox\uni\2016-s1\ict283\projects\vectorvector\tests\src\testingtools.cpp
+	"TestingTools.h"
+
+1462771570 source:c:\users\clemdavies\dropbox\uni\2016-s1\ict283\projects\vectorvector\tests\src\testvector.cpp
+	"TestVector.h"
+
