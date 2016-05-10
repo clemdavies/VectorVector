@@ -53,11 +53,13 @@ void TestVector::paramConstructor()
 	  tools->description("Vector of Vectors");
 		Vector<Vector<int>> instance;
 		Vector<int> inner;
+		inner.insert(0,55);
 		instance.insert(0,inner);
 		tools->assertEquals(instance.getSize(),(unsigned)1);
-		tools->assertEquals(instance.get(0).getSize(),(unsigned)0);
+		tools->assertEquals(instance.get(0).getSize(),(unsigned)1);
 		tools->assertEquals(instance.getMaxSize(),(unsigned)10);
 		tools->assertEquals(instance.get(0).getMaxSize(),(unsigned)10);
+		tools->assertEquals(instance.get(0).get(0),55);
 	}
 }
 
@@ -150,7 +152,7 @@ void TestVector::next()
 
 void TestVector::get()
 {
-	tools->setFunctionName("at");
+	tools->setFunctionName("get");
 	{
 		Vector<int> instance;
 		instance.insert(0,1);
@@ -158,6 +160,7 @@ void TestVector::get()
 		instance.insert(2,3);
     tools->assertEquals(instance.get(0),1);
     tools->assertEquals(instance.get(1),2);
+    tools->assertEquals(instance.get(2),3);
     tools->assertEquals(instance.get(2),3);
 	}
 }
@@ -374,8 +377,12 @@ void TestVector::erasePtr()
     tools->assertFalse( instance.hasValue(0) );
     tools->assertNotEquals(instance.get(0),i1);
     tools->assertEquals(*i2,10);
+    tools->assertEquals(instance.get(1),i2);
     instance.erasePtr(1);
+    tools->assertNotEquals(instance.get(1),i2);
+    tools->assertEquals(instance.get(2),i3);
     instance.erasePtr(2);
+    tools->assertNotEquals(instance.get(2),i3);
   }
 }
 
@@ -399,20 +406,24 @@ void TestVector::increaseSize()
 		Vector<int> instance;
     tools->assertEquals( instance.getMaxSize(),(unsigned)10 );
 		instance.insert(1,2);
-    instance.insert(10,25);
+    instance.insert(9,25);
+    tools->description("insert(1,2)");
+    tools->description("insert(9,25)");
 		tools->assertEquals( instance.getSize(),(unsigned)2 );
 		tools->assertEquals( instance.get(1),2 );
-		tools->assertEquals( instance.get(10),25 );
+		tools->assertEquals( instance.get(9),25 );
 		tools->assertEquals( instance.getSize(),(unsigned)2 );
-		tools->assertEquals( instance.getMaxSize(),(unsigned)15 );
+		tools->assertEquals( instance.getMaxSize(),(unsigned)10 );
     instance.insert(15,35);
+    tools->description("insert(15,35)");
 		tools->assertEquals( instance.getSize(),(unsigned)3 );
-		tools->assertEquals( instance.get(10),25 );
+		tools->assertEquals( instance.get(9),25 );
 		tools->assertEquals( instance.getSize(),(unsigned)3 );
 		tools->assertEquals( instance.get(15),35 );
 		tools->assertEquals( instance.getSize(),(unsigned)3 );
 		tools->assertEquals( instance.getMaxSize(),(unsigned)23 );
 		instance.insert(100,55);
+    tools->description("insert(100,55)");
 		/*
       new = ceil(old * 1.5)
       23 * 1.5 = 23 + 11.5 = 34.5 = 35
@@ -424,12 +435,15 @@ void TestVector::increaseSize()
 		tools->assertEquals( instance.getMaxSize(),(unsigned)120 );
 		tools->assertEquals( instance.get(100) ,55 );
 		instance.erase(15);
-		tools->assertEquals( instance.getSize(),(unsigned)3 );
+    tools->description("erase(15)");
+		tools->assertEquals( instance.getSize(),(unsigned)4 );
+		tools->assertFalse( instance.hasValue(15) );
 		tools->assertEquals( instance.getMaxSize(),(unsigned)120 );
 		instance.clear();
+    tools->description("clear()");
 		tools->assertTrue( instance.empty() );
 		tools->assertEquals( instance.getSize(),(unsigned)0 );
-		tools->assertEquals( instance.getMaxSize(),(unsigned)10 );
+		tools->assertEquals( instance.getMaxSize(),(unsigned)120 );
 	}
 }
 

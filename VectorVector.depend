@@ -1,11 +1,11 @@
 # depslib dependency file v1.0
-1462771629 source:c:\users\clemdavies\dropbox\uni\2016-s1\ict283\projects\vectorvector\main.cpp
+1462779340 source:c:\users\clemdavies\dropbox\uni\2016-s1\ict283\projects\vectorvector\main.cpp
 	<iostream>
-	"Vector.h"
 	"TestingTools.h"
 	"TestVector.h"
+	<vector>
 
-1462771623 c:\users\clemdavies\dropbox\uni\2016-s1\ict283\projects\vectorvector\include\vector.h
+1462782320 c:\users\clemdavies\dropbox\uni\2016-s1\ict283\projects\vectorvector\include\vector.h
 	<math.h>
 	<vector>
 
@@ -28,6 +28,38 @@
 1462771657 source:c:\users\clemdavies\dropbox\uni\2016-s1\ict283\projects\vectorvector\tests\src\testingtools.cpp
 	"TestingTools.h"
 
-1462771570 source:c:\users\clemdavies\dropbox\uni\2016-s1\ict283\projects\vectorvector\tests\src\testvector.cpp
+1462782323 source:c:\users\clemdavies\dropbox\uni\2016-s1\ict283\projects\vectorvector\tests\src\testvector.cpp
+	"TestVector.h"
+
+1462782361 source:e:\dropbox\uni\2016-s1\ict283\projects\vectorvector\main.cpp
+	<iostream>
+	"TestingTools.h"
+	"TestVector.h"
+	<vector>
+
+1462771643 e:\dropbox\uni\2016-s1\ict283\projects\vectorvector\tests\include\testingtools.h
+	<vector>
+	<iostream>
+	<typeinfo>
+	<string.h>
+	<string>
+	<exception>
+	<sstream>
+
+1462771590 e:\dropbox\uni\2016-s1\ict283\projects\vectorvector\tests\include\testvector.h
+	"TestingTools.h"
+	"Vector.h"
+
+1462856386 e:\dropbox\uni\2016-s1\ict283\projects\vectorvector\include\vector.h
+	<math.h>
+	<vector>
+
+1462771651 source:e:\dropbox\uni\2016-s1\ict283\projects\vectorvector\src\vector.cpp
+	"Vector.h"
+
+1462771657 source:e:\dropbox\uni\2016-s1\ict283\projects\vectorvector\tests\src\testingtools.cpp
+	"TestingTools.h"
+
+1462782323 source:e:\dropbox\uni\2016-s1\ict283\projects\vectorvector\tests\src\testvector.cpp
 	"TestVector.h"
 

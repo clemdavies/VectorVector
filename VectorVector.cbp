@@ -13,6 +13,8 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="include" />
+					<Add directory="tests/include" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -22,6 +24,8 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="include" />
+					<Add directory="tests/include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -32,7 +36,13 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="include/Vector.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/Vector.cpp" />
+		<Unit filename="tests/include/TestVector.h" />
+		<Unit filename="tests/include/TestingTools.h" />
+		<Unit filename="tests/src/TestVector.cpp" />
+		<Unit filename="tests/src/TestingTools.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

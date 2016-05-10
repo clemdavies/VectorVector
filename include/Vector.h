@@ -25,14 +25,14 @@ class Vector
        */
     Vector()
 		{
-		  currentSize = 0;
-		  maxSize = MINIMUM_SIZE;
-      elements = new T[maxSize];
-      usedIndices = new bool[maxSize];
-      for(unsigned i = 0; i < maxSize; i++)usedIndices[i] = false;
+      maxSize = MINIMUM_SIZE;
+      elements = new std::vector<T>(maxSize);
+      usedIndices = new std::vector<bool>(maxSize,false);
+      currentSize = 0;
       currentIndex = -1;
       lastIndex = -1;
 		}
+
 
       /**
        * @brief Creates a Vector with starting maxSize as passed value.
@@ -40,11 +40,10 @@ class Vector
        */
     Vector(unsigned size)
 		{
-		  currentSize = 0;
-      maxSize = (size > MINIMUM_SIZE) ? size : MINIMUM_SIZE;
-      elements = new T[maxSize];
-      usedIndices = new bool[maxSize];
-      for(unsigned i = 0; i < maxSize; i++) usedIndices[i] = false;
+		  maxSize = (size > MINIMUM_SIZE)? size : MINIMUM_SIZE;
+      elements = new std::vector<T>(maxSize);
+      usedIndices = new std::vector<bool>(maxSize,false);
+      currentSize = 0;
       currentIndex = -1;
       lastIndex = -1;
 		}
@@ -57,22 +56,14 @@ class Vector
     Vector( const Vector &srcVector)
 		{
 		  maxSize = srcVector.maxSize;
-		  currentSize = srcVector.currentSize;
-
-		  elements = new T[maxSize];
-      usedIndices = new bool[maxSize];
+      elements = new std::vector<T>(maxSize);
+      usedIndices = new std::vector<bool>(maxSize);
       for(unsigned i = 0; i < maxSize; i++)
       {
-        if(srcVector.usedIndices[i])
-        {
-          elements[i] = srcVector.elements[i];
-          usedIndices[i] = true;
-        }
-        else
-        {
-          usedIndices[i] = false;
-        }
+        (*elements)[i] = (*srcVector.elements)[i];
+        (*usedIndices)[i] = (*srcVector.usedIndices)[i];
       }
+      currentSize = srcVector.currentSize;
       currentIndex = srcVector.currentIndex;
       lastIndex = srcVector.lastIndex;
 		}
@@ -89,36 +80,29 @@ class Vector
         return *this;
 
 		  maxSize = srcVector.maxSize;
-		  currentSize = srcVector.currentSize;
-
-		  elements = new T[maxSize];
-      usedIndices = new bool[maxSize];
-      for(unsigned i = 0; i < maxSize; i++ )
+      elements = new std::vector<T>(maxSize);
+      usedIndices = new std::vector<bool>(maxSize);
+      for(unsigned i = 0; i < maxSize; i++)
       {
-        if(srcVector.usedIndices[i])
-        {
-          elements[i] = srcVector.elements[i];
-          usedIndices[i] = true;
-        }
-        else
-        {
-          usedIndices[i] = false;
-        }
+        (*elements)[i] = (*srcVector.elements)[i];
+        (*usedIndices)[i] = (*srcVector.usedIndices)[i];
       }
+      currentSize = srcVector.currentSize;
       currentIndex = srcVector.currentIndex;
       lastIndex = srcVector.lastIndex;
 
       return *this;
 		}
 
+
+
       /**
        * @brief Destroys the stored arrays.
        */
     virtual ~Vector()
 		{
-		  clear();
-		  delete[] elements;
-		  delete[] usedIndices;
+		  delete elements;
+		  delete usedIndices;
 		}
 
       /**
@@ -128,8 +112,8 @@ class Vector
 		bool next()
 		{
 		  if(currentSize == 0) return false;
-		  for(currentIndex++;!usedIndices[currentIndex] && currentIndex < (int)maxSize;currentIndex++);
-		  if(currentIndex == (int)maxSize)currentIndex = -1;
+		  for(currentIndex++;!(*usedIndices)[currentIndex] && currentIndex < static_cast<int>(elements->capacity());currentIndex++);
+		  if( currentIndex == static_cast<int>(elements->capacity()) )currentIndex = -1;
 		  return currentIndex != -1;
 		}
 
@@ -141,7 +125,7 @@ class Vector
        */
     const T& get(unsigned index) const
 		{
-      return elements[index];
+      return (*elements)[index];
 		}
 
       /**
@@ -150,7 +134,7 @@ class Vector
        */
     const T& getCurrent() const
 		{
-      return elements[currentIndex];
+      return (*elements)[currentIndex];
 		}
 
       /**
@@ -160,15 +144,14 @@ class Vector
        */
     void insert(unsigned index, const T &element)
 		{
-      if(index >= maxSize)
+		  if(index >= maxSize)
       {
-        // index out of bounds
         increaseMaxSize(index);
-      }
-      currentSize++;
-      usedIndices[index] = true;
+		  }
+		  (*elements)[index] = element;
+		  currentSize++;
+		  (*usedIndices)[index] = true;
       currentIndex = index;
-      elements[index] = element;
       lastIndex = ((int)index > lastIndex) ? (int)index : lastIndex;
 		}
 
@@ -186,13 +169,9 @@ class Vector
        */
 		void clearPtrs()
 		{
-		  for(unsigned i = 0;i < maxSize;i++)
-      {
-        if(usedIndices[i])
-        {
-          delete elements[i];
-        }
-      }
+
+		  for ( typename std::vector<T>::iterator it = elements->begin(); it != elements->end(); ++it)
+        delete *it;
       clear();
 		}
 
@@ -201,12 +180,8 @@ class Vector
        */
     void clear()
 		{
-      delete[] elements;
-      delete[] usedIndices;
-		  maxSize = MINIMUM_SIZE;
-      elements = new T[maxSize];
-      usedIndices = new bool[maxSize];
-      for(unsigned i = 0; i < maxSize; i++) usedIndices[i] = false;
+		  elements->clear();
+      usedIndices->clear();
       currentSize = 0;
       currentIndex = -1;
 		}
@@ -217,10 +192,10 @@ class Vector
        */
     void erase(unsigned index)
     {
-      if(index < maxSize && usedIndices[index])
+      if(index < maxSize && (*usedIndices)[index])
       {
         currentSize--;
-        usedIndices[index] = false;
+        (*usedIndices)[index] = false;
         resetIndex();
       }
 		}
@@ -231,12 +206,12 @@ class Vector
        */
 		void erasePtr(unsigned index)
 		{
-      if(index < maxSize && usedIndices[index])
+      if(index < maxSize && (*usedIndices)[index])
       {
-        delete elements[index];
-        elements[index] = nullptr;
+        delete (*elements)[index];
+        (*elements)[index] = nullptr;
         currentSize--;
-        usedIndices[index] = false;
+        (*usedIndices)[index] = false;
         resetIndex();
       }
 		}
@@ -257,7 +232,7 @@ class Vector
        */
     bool hasValue(unsigned index) const
     {
-      return usedIndices[index];
+      return (*usedIndices)[index];
     }
 
       /**
@@ -302,7 +277,7 @@ class Vector
        */
     unsigned getMaxSize() const
 		{
-      return maxSize;
+      return static_cast<unsigned>(elements->capacity());
 		}
 
   private:
@@ -319,8 +294,8 @@ class Vector
       }
       else
       {
-        for(currentIndex = 0;!usedIndices[currentIndex];currentIndex++);
-        for(lastIndex = maxSize-1;!usedIndices[lastIndex];lastIndex--);
+        for(currentIndex = 0;!(*usedIndices)[currentIndex];currentIndex++);
+        for(lastIndex = maxSize-1;!(*usedIndices)[lastIndex];lastIndex--);
       }
     }
 
@@ -331,30 +306,9 @@ class Vector
     void increaseMaxSize(unsigned toFitIndex)
 		{
 		  if(toFitIndex < maxSize)return;
-
-      unsigned OLD_maxSize = maxSize;
 		  while(toFitIndex >= maxSize) maxSize = ceil( maxSize * 1.5 );
-
-      bool * LARGER_usedIndices = new bool[maxSize];
-      T * LARGER_elements = new T[maxSize];
-
-      for(unsigned i = 0; i < maxSize; i++)
-      {
-        if(i < OLD_maxSize && usedIndices[i])
-        {
-          LARGER_usedIndices[i] = true;
-          LARGER_elements[i] = elements[i];
-        }
-        else
-        {
-          LARGER_usedIndices[i] = false;
-        }
-      }
-      delete[] elements;
-      delete[] usedIndices;
-      elements = LARGER_elements;
-      usedIndices = LARGER_usedIndices;
-      currentIndex = -1;
+		  elements->reserve(maxSize);
+		  usedIndices->reserve(maxSize);
 		}
 
     /**
@@ -380,12 +334,12 @@ class Vector
     /**
      * @brief Array denoting if there is an element stored at the same index in elements array.
      */
-    bool * usedIndices;
+    std::vector<bool> *usedIndices;
 
     /**
      * @brief The encapsulated vector.
      */
-    T * elements;
+    std::vector<T> *elements;
 };
 
 #endif // VECTOR_H
