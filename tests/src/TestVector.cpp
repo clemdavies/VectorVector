@@ -28,9 +28,6 @@ void TestVector::emptyConstructor()
 		Vector<int*> instance3;
     tools->assertTypeNotEquals(instance1,instance2);
     tools->assertTypeEquals(instance1,instance3);
-    instance1.clearPtrs();
-    instance2.clearPtrs();
-    instance3.clearPtrs();
 	}
 }
 
@@ -125,30 +122,6 @@ void TestVector::assignmentOperator()
 	}
 }
 
-void TestVector::next()
-{
-	tools->setFunctionName("next");
-	{
-		Vector<int> instance;
-		instance.insert(0,5);
-		instance.insert(1,6);
-		instance.insert(2,7);
-		instance.insert(3,8);
-    instance.resetPtr();
-		tools->assertEquals(instance.getCurrent(),5);
-		tools->assertTrue(instance.next());
-		tools->assertEquals(instance.getCurrent(),6);
-		tools->assertTrue(instance.next());
-		tools->assertEquals(instance.getCurrent(),7);
-		tools->assertTrue(instance.next());
-		tools->assertEquals(instance.getCurrent(),8);
-		tools->assertFalse(instance.next());
-    instance.resetPtr();
-		tools->assertEquals(instance.getCurrent(),5);
-		instance.next();
-		tools->assertEquals(instance.getCurrent(),6);
-	}
-}
 
 void TestVector::get()
 {
@@ -162,54 +135,6 @@ void TestVector::get()
     tools->assertEquals(instance.get(1),2);
     tools->assertEquals(instance.get(2),3);
     tools->assertEquals(instance.get(2),3);
-	}
-}
-
-void TestVector::getCurrent()
-{
-	tools->setFunctionName("getCurrent");
-	{
-		Vector<int> instance;
-		instance.insert(0,5);
-		instance.insert(1,6);
-		tools->assertEquals(instance.getCurrent(),6);
-		instance.insert(2,7);
-		tools->assertEquals(instance.getCurrent(),7);
-		instance.insert(3,8);
-		tools->assertEquals(instance.getCurrent(),8);
-		instance.resetPtr();
-		tools->assertEquals(instance.getCurrent(),5);
-    instance.insert(4,25);
-		tools->assertEquals(instance.getCurrent(),25);
-    instance.insert(6,30);
-		instance.resetPtr();
-		for(unsigned i = 0;i<5;i++)instance.next();
-		tools->assertEquals(instance.getCurrent(),30);
-	}
-}
-
-
-void TestVector::getCurrentIndex()
-{
-	tools->setFunctionName("getCurrentIndex");
-	{
-		Vector<int> instance;
-		tools->assertEquals(instance.getCurrentIndex(),-1);
-		instance.insert(0,5);
-		instance.insert(1,6);
-		tools->assertEquals(instance.getCurrentIndex(),1);
-		instance.insert(2,7);
-		tools->assertEquals(instance.getCurrentIndex(),2);
-		instance.insert(3,8);
-		tools->assertEquals(instance.getCurrentIndex(),3);
-		instance.resetPtr();
-		tools->assertEquals(instance.getCurrentIndex(),0);
-    instance.insert(4,25);
-		tools->assertEquals(instance.getCurrentIndex(),4);
-    instance.insert(6,30);
-		instance.resetPtr();
-		for(unsigned i = 0;i<5;i++)instance.next();
-		tools->assertEquals(instance.getCurrentIndex(),6);
 	}
 }
 
@@ -270,20 +195,6 @@ void TestVector::insert()
 	}
 }
 
-void TestVector::insertEnd()
-{
-  tools->setFunctionName("insertEnd");
-  {
-    Vector<int> instance;
-    instance.insertEnd(10);
-    instance.insertEnd(20);
-    instance.insertEnd(30);
-    tools->assertEquals(instance.get(0),10);
-    tools->assertEquals(instance.get(1),20);
-    tools->assertEquals(instance.get(2),30);
-  }
-}
-
 void TestVector::clear()
 {
 	tools->setFunctionName("clear");
@@ -305,86 +216,6 @@ void TestVector::clear()
 	}
 }
 
-void TestVector::clearPtrs()
-{
-  tools->setFunctionName("clearPtrs");
-  {
-    Vector<int*> instance;
-    int *i1 = new int(5),
-        *i2 = new int(10),
-        *i3 = new int(15);
-    instance.insertEnd(i1);
-    instance.insertEnd(i2);
-    instance.insertEnd(i3);
-    tools->assertFalse( instance.empty() );
-    tools->assertEquals(i1,instance.get(0));
-    instance.clearPtrs();
-    tools->assertTrue( instance.empty() );
-  }
-}
-
-void TestVector::erase()
-{
-	tools->setFunctionName("erase");
-	{
-		Vector<int> instance;
-		instance.insert(0,5);
-		instance.insert(1,6);
-		instance.insert(2,8);
-		instance.erase(0);
-		tools->assertEquals(instance.getSize(),(unsigned)2);
-		instance.erase(0);
-		tools->assertEquals(instance.getSize(),(unsigned)2);
-		instance.erase(1);
-		tools->assertEquals(instance.getSize(),(unsigned)1);
-		instance.erase(1);
-		tools->assertEquals(instance.getSize(),(unsigned)1);
-		instance.erase(2);
-		tools->assertEquals(instance.getSize(),(unsigned)0);
-	}
-	{
-		Vector<const char *> instance;
-		instance.insert(0,"Clem");
-		instance.insert(1,"W");
-		instance.insert(2,"Davies");
-		instance.erase(0);
-		tools->assertEquals(instance.getSize(),(unsigned)2);
-		instance.erase(0);
-		tools->assertEquals(instance.getSize(),(unsigned)2);
-		instance.erase(1);
-		tools->assertEquals(instance.getSize(),(unsigned)1);
-		instance.erase(1);
-		tools->assertEquals(instance.getSize(),(unsigned)1);
-		instance.erase(2);
-		tools->assertEquals(instance.getSize(),(unsigned)0);
-	}
-}
-
-void TestVector::erasePtr()
-{
-  tools->setFunctionName("erasePtr");
-  {
-    Vector<int*> instance;
-    int *i1 = new int(5),
-        *i2 = new int(10),
-        *i3 = new int(15);
-    instance.insertEnd(i1);
-    instance.insertEnd(i2);
-    instance.insertEnd(i3);
-    tools->assertTrue( instance.hasValue(0) );
-    tools->assertEquals(instance.get(0),i1);
-    instance.erasePtr(0);
-    tools->assertFalse( instance.hasValue(0) );
-    tools->assertNotEquals(instance.get(0),i1);
-    tools->assertEquals(*i2,10);
-    tools->assertEquals(instance.get(1),i2);
-    instance.erasePtr(1);
-    tools->assertNotEquals(instance.get(1),i2);
-    tools->assertEquals(instance.get(2),i3);
-    instance.erasePtr(2);
-    tools->assertNotEquals(instance.get(2),i3);
-  }
-}
 
 void TestVector::empty()
 {
@@ -422,22 +253,19 @@ void TestVector::increaseSize()
 		tools->assertEquals( instance.get(15),35 );
 		tools->assertEquals( instance.getSize(),(unsigned)3 );
 		tools->assertEquals( instance.getMaxSize(),(unsigned)23 );
-		instance.insert(100,55);
-    tools->description("insert(100,55)");
 		/*
       new = ceil(old * 1.5)
       23 * 1.5 = 23 + 11.5 = 34.5 = 35
       35 * 1.5 = 35 + 17.5 = 52.5 = 53
       53 * 1.5 = 53 + 26.5 = 79.5 = 80
-      80 * 1.5 = 80 + 40 = 120 = 120
+      80 * 1.5 = 80 + 40   = 120  = 120
 		*/
+		instance.insert(100,55);
+    tools->description("insert(100,55)");
 		tools->assertEquals( instance.getSize(),(unsigned)4 );
 		tools->assertEquals( instance.getMaxSize(),(unsigned)120 );
 		tools->assertEquals( instance.get(100) ,55 );
-		instance.erase(15);
-    tools->description("erase(15)");
-		tools->assertEquals( instance.getSize(),(unsigned)4 );
-		tools->assertFalse( instance.hasValue(15) );
+
 		tools->assertEquals( instance.getMaxSize(),(unsigned)120 );
 		instance.clear();
     tools->description("clear()");
@@ -447,20 +275,3 @@ void TestVector::increaseSize()
 	}
 }
 
-
-void TestVector::resetIndex()
-{
-  tools->setFunctionName("resetIndex");
-  {
-    Vector<int> instance;
-    instance.insert(5,20);
-    instance.insert(10,25);
-    instance.insert(20,35);
-    tools->assertEquals(instance.getCurrentIndex(),20);
-    instance.erase(20);
-    tools->assertEquals(instance.getCurrentIndex(),5);
-    instance.resetPtr();
-    instance.erase(5);
-    tools->assertEquals(instance.getCurrentIndex(),10);
-  }
-}
