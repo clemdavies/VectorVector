@@ -14,25 +14,13 @@ class TestVector
     void paramConstructor();
     void copyConstructor();
     void assignmentOperator();
-
-    void next();
-
     void get();
-    void getCurrent();
-    void getCurrentIndex();
     void getSize();
     void getMaxSize();
-
     void insert();
-    void insertEnd();
     void clear();
-    void clearPtrs();
-    void erase();
-    void erasePtr();
     void empty();
-
     void increaseSize();
-    void resetIndex();
 
   protected:
   private:
