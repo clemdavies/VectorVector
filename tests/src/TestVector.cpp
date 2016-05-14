@@ -273,5 +273,28 @@ void TestVector::increaseSize()
 		tools->assertEquals( instance.getSize(),(unsigned)0 );
 		tools->assertEquals( instance.getMaxSize(),(unsigned)120 );
 	}
+	{
+    tools->description("loop insert");
+    Vector<int> instance;
+    int value;
+    for(unsigned i = 0; i < 300; i++)
+    {
+      value = i*3;
+      instance.insert(i,value);
+      if(i == 10)
+        tools->assertEquals(instance.get(10),30);
+      if(i==100)
+        tools->assertEquals(instance.get(100),300);
+
+    }
+
+    tools->assertEquals(instance.getSize(),(unsigned)300);
+    tools->assertEquals(instance.getMaxSize(),(unsigned)540);
+    tools->assertEquals(instance.get(1),3);
+    tools->assertEquals(instance.get(10),30);
+    tools->assertEquals(instance.get(100),300);
+
+	}
+
 }
 

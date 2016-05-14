@@ -221,7 +221,7 @@ class Vector
   {
     if(toFitIndex < maxSize)return;
     while(toFitIndex >= maxSize) maxSize = ceil( maxSize * 1.5 );
-    elements->reserve(maxSize);
+    elements->resize(maxSize);
   }
 
 
